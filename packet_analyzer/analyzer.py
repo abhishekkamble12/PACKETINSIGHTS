@@ -22,6 +22,7 @@ else:
 
 from packet_analyzer.parser import PacketParser, parse_dns, parse_http, parse_tls
 from packet_analyzer.protocols import ProtocolDetector
+from packet_analyzer.detector import ThreatDetector
 from packet_analyzer.reader import PacketReader
 from packet_analyzer.report import build_report, save_report
 from packet_analyzer.statistics import StatsEngine
@@ -117,7 +118,9 @@ def extract_tls(packet) -> str | None:
     return "TLS traffic on port 443"
 
 
-def analyze_packets(pcap_path: str | Path, db_session = None) -> dict[str, object]:
+def analyze_packets(
+    pcap_path: str | Path, db_session=None
+) -> tuple[dict[str, object], list[dict[str, any]]]:
     if SCAPY_IMPORT_ERROR is not None:
         raise RuntimeError(
             "Scapy is required to analyze PCAP files. Install dependencies with: pip install -r requirements.txt"
@@ -125,7 +128,7 @@ def analyze_packets(pcap_path: str | Path, db_session = None) -> dict[str, objec
 
     reader = PacketReader()
     parser = PacketParser()
-    detector = ProtocolDetector()
+    proto_detector = ProtocolDetector()
     stats = StatsEngine()
 
     packets = reader.read(pcap_path)
@@ -134,7 +137,7 @@ def analyze_packets(pcap_path: str | Path, db_session = None) -> dict[str, objec
     for packet in packets:
         try:
             metadata = parser.parse(packet)
-            protocol = detector.detect(packet)
+            protocol = proto_detector.detect(packet)
 
             stats.record_protocol(protocol)
             stats.record_endpoints(metadata.get("src_ip"), metadata.get("dst_ip"))
@@ -142,29 +145,50 @@ def analyze_packets(pcap_path: str | Path, db_session = None) -> dict[str, objec
             stats.record_http_request(extract_http(packet))
             stats.record_tls_host(extract_tls(packet))
 
-            if db_session is not None:
-                record = {
-                    "timestamp": metadata["timestamp"],
-                    "src_ip": metadata.get("src_ip"),
-                    "dst_ip": metadata.get("dst_ip"),
-                    "src_port": metadata.get("src_port"),
-                    "dst_port": metadata.get("dst_port"),
-                    "protocol": protocol,
-                    "packet_size": metadata.get("packet_size", 0),
-                    "dns_query": parse_dns(packet),
-                    "http_request": parse_http(packet),
-                    "tls_session": parse_tls(packet),
-                }
-                db_records.append(record)
+            # Record flow details
+            stats.record_flow(
+                src_ip=metadata.get("src_ip"),
+                dst_ip=metadata.get("dst_ip"),
+                src_port=metadata.get("src_port"),
+                dst_port=metadata.get("dst_port"),
+                protocol=protocol,
+                timestamp=metadata.get("timestamp", 0.0),
+                packet_size=metadata.get("packet_size", 0),
+            )
+
+            # Build record in-memory for CSV and DB
+            record = {
+                "timestamp": metadata["timestamp"],
+                "src_ip": metadata.get("src_ip"),
+                "dst_ip": metadata.get("dst_ip"),
+                "src_port": metadata.get("src_port"),
+                "dst_port": metadata.get("dst_port"),
+                "protocol": protocol,
+                "packet_size": metadata.get("packet_size", 0),
+                "dns_query": parse_dns(packet),
+                "http_request": parse_http(packet),
+                "tls_session": parse_tls(packet),
+            }
+            db_records.append(record)
         except Exception:
             stats.mark_skipped_packet()
 
+    results = stats.build_results(
+        pcap_path=str(Path(pcap_path).resolve()), total_packets=len(packets)
+    )
+
+    # Threat Detection
+    threat_detector = ThreatDetector()
+    alerts = threat_detector.detect(results["flows"])
+    results["alerts"] = alerts
+
     if db_session is not None and db_records:
         from packet_analyzer.repository import PacketRepository
-        repo = PacketRepository(db_session)
-        repo.add_packets_bulk(db_records)
 
-    return stats.build_results(pcap_path=str(Path(pcap_path).resolve()), total_packets=len(packets))
+        repo = PacketRepository(db_session)
+        repo.add_packets_bulk(db_records, alert_records=alerts)
+
+    return results, db_records
 
 
 def parse_args() -> argparse.Namespace:
@@ -180,6 +204,14 @@ def parse_args() -> argparse.Namespace:
         "--db-path",
         default="packets.db",
         help="Path to SQLite database to save analysis results (default: packets.db). Use 'none' to disable storage.",
+    )
+    parser.add_argument(
+        "--json",
+        help="Path to save the generated JSON report (e.g., reports/report.json).",
+    )
+    parser.add_argument(
+        "--csv",
+        help="Base path / prefix to save the generated CSV reports (e.g., reports/report).",
     )
     return parser.parse_args()
 
@@ -199,9 +231,26 @@ def main() -> int:
             return 1
 
     try:
-        results = analyze_packets(args.pcap, db_session=db_session)
+        results, db_records = analyze_packets(args.pcap, db_session=db_session)
         report = build_report(results)
         output_path = save_report(report, args.output)
+
+        print(report)
+        print(f"\nReport saved to: {output_path.resolve()}")
+
+        if args.json:
+            from packet_analyzer.report import save_json_report
+            json_path = save_json_report(results, args.json)
+            print(f"JSON report saved to: {Path(json_path).resolve()}")
+
+        if args.csv:
+            from packet_analyzer.report import save_csv_reports
+            csv_paths = save_csv_reports(results, db_records, args.csv)
+            for path in csv_paths:
+                print(f"CSV report saved to: {Path(path).resolve()}")
+
+        if args.db_path and args.db_path.lower() != "none":
+            print(f"Analysis results saved to database: {Path(args.db_path).resolve()}")
     except (FileNotFoundError, ValueError, RuntimeError) as exc:
         print(f"Error: {exc}")
         return 1
@@ -209,10 +258,6 @@ def main() -> int:
         if db_session:
             db_session.close()
 
-    print(report)
-    print(f"\nReport saved to: {output_path.resolve()}")
-    if args.db_path and args.db_path.lower() != "none":
-        print(f"Analysis results saved to database: {Path(args.db_path).resolve()}")
     return 0
 
 

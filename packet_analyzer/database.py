@@ -17,7 +17,9 @@ class Packet(Base):
     dst_port: Mapped[int | None] = mapped_column(Integer, nullable=True)
     protocol: Mapped[str | None] = mapped_column(String, nullable=True)
     packet_size: Mapped[int] = mapped_column(Integer, nullable=False)
+    flow_id: Mapped[int | None] = mapped_column(ForeignKey("flows.id"), nullable=True)
 
+    flow: Mapped[Flow | None] = relationship(back_populates="packets")
     dns_queries: Mapped[list[DNSQuery]] = relationship(
         back_populates="packet", cascade="all, delete-orphan"
     )
@@ -27,6 +29,43 @@ class Packet(Base):
     tls_sessions: Mapped[list[TLSSession]] = relationship(
         back_populates="packet", cascade="all, delete-orphan"
     )
+
+
+class Flow(Base):
+    __tablename__ = "flows"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    src_ip: Mapped[str] = mapped_column(String, nullable=False)
+    dst_ip: Mapped[str] = mapped_column(String, nullable=False)
+    src_port: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    dst_port: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    protocol: Mapped[str] = mapped_column(String, nullable=False)
+    packet_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    byte_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    start_time: Mapped[float] = mapped_column(Float, nullable=False)
+    end_time: Mapped[float] = mapped_column(Float, nullable=False)
+    duration: Mapped[float] = mapped_column(Float, nullable=False)
+
+    packets: Mapped[list[Packet]] = relationship(
+        back_populates="flow", cascade="all, delete-orphan"
+    )
+    alerts: Mapped[list[Alert]] = relationship(
+        back_populates="flow", cascade="all, delete-orphan"
+    )
+
+
+class Alert(Base):
+    __tablename__ = "alerts"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    timestamp: Mapped[float] = mapped_column(Float, nullable=False)
+    rule_name: Mapped[str] = mapped_column(String, nullable=False)
+    severity: Mapped[str] = mapped_column(String, nullable=False)
+    description: Mapped[str] = mapped_column(String, nullable=False)
+    src_ip: Mapped[str | None] = mapped_column(String, nullable=True)
+    flow_id: Mapped[int | None] = mapped_column(ForeignKey("flows.id"), nullable=True)
+
+    flow: Mapped[Flow | None] = relationship(back_populates="alerts")
 
 
 class DNSQuery(Base):

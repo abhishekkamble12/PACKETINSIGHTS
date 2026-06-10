@@ -16,6 +16,7 @@ class StatsEngine:
         self.tls_hosts: Counter[str] = Counter()
         self.http_requests: list[str] = []
         self.skipped_packets = 0
+        self.flows: dict[tuple, dict[str, any]] = {}
 
     def record_protocol(self, protocol: str | None) -> None:
         if protocol:
@@ -41,10 +42,66 @@ class StatsEngine:
             self.tls_hosts[tls_host] += 1
             self.protocol_stats["TLS"] += 1
 
+    def record_flow(
+        self,
+        src_ip: str | None,
+        dst_ip: str | None,
+        src_port: int | None,
+        dst_port: int | None,
+        protocol: str | None,
+        timestamp: float,
+        packet_size: int,
+    ) -> None:
+        from packet_analyzer.repository import get_flow_key
+        flow_key = get_flow_key(src_ip, dst_ip, src_port, dst_port, protocol)
+        if flow_key not in self.flows:
+            self.flows[flow_key] = {
+                "src_ip": src_ip or "",
+                "dst_ip": dst_ip or "",
+                "src_port": src_port,
+                "dst_port": dst_port,
+                "protocol": protocol or "",
+                "packet_count": 0,
+                "byte_count": 0,
+                "start_time": timestamp,
+                "end_time": timestamp,
+                "duration": 0.0,
+            }
+
+        flow = self.flows[flow_key]
+        flow["packet_count"] += 1
+        flow["byte_count"] += packet_size
+        if timestamp < flow["start_time"]:
+            flow["start_time"] = timestamp
+        if timestamp > flow["end_time"]:
+            flow["end_time"] = timestamp
+        flow["duration"] = max(0.0, flow["end_time"] - flow["start_time"])
+
     def mark_skipped_packet(self) -> None:
         self.skipped_packets += 1
 
     def build_results(self, *, pcap_path: str, total_packets: int) -> dict[str, object]:
+        sorted_flows = sorted(
+            [
+                {
+                    "src_ip": f["src_ip"],
+                    "dst_ip": f["dst_ip"],
+                    "src_port": f["src_port"],
+                    "dst_port": f["dst_port"],
+                    "protocol": f["protocol"],
+                    "packet_count": f["packet_count"],
+                    "byte_count": f["byte_count"],
+                    "start_time": f["start_time"],
+                    "end_time": f["end_time"],
+                    "duration": f["duration"],
+                    "flow_key": key,
+                }
+                for key, f in self.flows.items()
+            ],
+            key=lambda x: x["packet_count"],
+            reverse=True,
+        )
+
         return {
             "pcap_path": pcap_path,
             "total_packets": total_packets,
@@ -56,4 +113,6 @@ class StatsEngine:
             "top_dns_queries": top_items(self.dns_queries),
             "http_requests": self.http_requests[:5],
             "tls_hosts": top_items(self.tls_hosts),
+            "flows": sorted_flows,
+            "alerts": [],
         }
