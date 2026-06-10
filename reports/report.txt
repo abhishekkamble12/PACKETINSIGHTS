@@ -1,0 +1,46 @@
+================================
+PACKET ANALYSIS REPORT
+================================
+
+Analyzed File: D:\PacketInsight\pcaps\test.pcap
+Total Packets: 14
+Processed Packets: 14
+Skipped Packets: 0
+
+Protocol Statistics:
+DHCP: 1
+DNS: 5
+HTTP: 3
+HTTPS: 3
+SMTP: 1
+SSH: 1
+TLS: 3
+
+Top Source IPs:
+192.168.1.10: 8
+192.168.1.11: 1
+192.168.1.12: 1
+192.168.1.13: 1
+192.168.1.14: 1
+
+Top Destination IPs:
+8.8.8.8: 5
+93.184.216.34: 3
+140.82.121.4: 3
+192.168.1.200: 1
+74.125.142.27: 1
+
+Top DNS Queries:
+None
+
+Sample HTTP Requests:
+GET example.com/index.html
+POST api.example.com/v1/data
+GET python.org/downloads/
+
+TLS Hosts:
+github.com: 1
+google.com: 1
+microsoft.com: 1
+
+================================
