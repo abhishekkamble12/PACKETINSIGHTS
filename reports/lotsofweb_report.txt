@@ -1,0 +1,161 @@
+==================================
+PACKET ANALYSIS REPORT
+==================================
+
+Analyzed File: D:\PacketInsight\pcaps\lotsofweb.pcapng
+Total Packets: 12899
+Processed Packets: 12899
+Skipped Packets: 0
+
+Protocol Statistics:
+DHCP: 2
+DNS: 105
+HTTP: 12640
+HTTPS: 5
+TLS: 5
+UDP: 139
+
+Top Source IPs:
+74.125.103.163: 2882
+172.16.16.128: 2790
+172.16.16.136: 1137
+172.16.16.197: 1107
+66.35.45.201: 596
+
+Top Destination IPs:
+172.16.16.128: 5534
+172.16.16.136: 1212
+172.16.16.197: 1050
+74.125.103.163: 1045
+66.35.45.201: 510
+
+Top DNS Queries:
+i.dev.cdn.turner.com: 8
+i.dev.cdn.turner.com.ewaphoenix.com: 8
+pagead2.googlesyndication.com: 4
+www.nostarch.com: 4
+www.sans.org: 4
+
+Sample HTTP Requests:
+GET online.wsj.com/public/page/0_0_WH_0001_public_breakingnewscontent.html
+GET www.cnn.com/
+GET i.cdn.turner.com/cnn/.element/css/3.0/common.css
+GET i.cdn.turner.com/cnn/.element/js/3.0/protoaculous.1.8.2.min.js
+GET i.cdn.turner.com/cnn/.element/css/3.0/main.css
+
+TLS Hosts:
+TLS traffic on port 443: 5
+
+Flow Analysis Summary (Top 5):
+  172.16.16.128:3000 <-> 74.125.103.163:80 (HTTP) | Packets: 3927 | Bytes: 4232435 | Duration: 54.31s
+  172.16.16.128:2986 <-> 74.125.103.147:80 (HTTP) | Packets: 608 | Bytes: 633494 | Duration: 7.54s
+  172.16.16.128:2938 <-> 209.85.225.165:80 (HTTP) | Packets: 274 | Bytes: 288878 | Duration: 48.37s
+  172.16.16.128:2985 <-> 74.125.166.28:80 (HTTP) | Packets: 255 | Bytes: 252665 | Duration: 31.22s
+  172.16.16.136:60710 <-> 66.35.45.201:80 (HTTP) | Packets: 219 | Bytes: 205628 | Duration: 44.86s
+
+Security Alerts:
+  [HIGH] Port Scan - Host 172.16.16.128 scanned 7 different ports: [53, 80, 137, 161, 427, 1900, 5355]. (Time: 1258920198.46)
+  [HIGH] Port Scan - Host 172.16.16.136 scanned 3 different ports: [53, 80, 443]. (Time: 1258920198.46)
+  [HIGH] DNS Flood - Host 172.16.16.128 sent 16 DNS queries, exceeding threshold of 3. (Time: 1258920198.46)
+  [HIGH] DNS Flood - Host 172.16.16.197 sent 63 DNS queries, exceeding threshold of 3. (Time: 1258920198.46)
+  [HIGH] DNS Flood - Host 172.16.16.136 sent 26 DNS queries, exceeding threshold of 3. (Time: 1258920198.46)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2905 -> 205.203.140.65:80 (HTTP) transmitted 46209 bytes. (Time: 1258920200.17)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2918 -> 157.166.226.25:80 (HTTP) transmitted 27567 bytes. (Time: 1258920201.64)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2919 -> 204.160.104.126:80 (HTTP) transmitted 17155 bytes. (Time: 1258920201.78)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2920 -> 204.160.104.126:80 (HTTP) transmitted 16679 bytes. (Time: 1258920201.78)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2921 -> 204.160.104.126:80 (HTTP) transmitted 16619 bytes. (Time: 1258920201.78)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2922 -> 204.160.104.126:80 (HTTP) transmitted 23313 bytes. (Time: 1258920201.80)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2923 -> 204.160.104.126:80 (HTTP) transmitted 44256 bytes. (Time: 1258920201.80)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2924 -> 204.160.104.126:80 (HTTP) transmitted 31246 bytes. (Time: 1258920201.81)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2927 -> 157.166.255.38:80 (HTTP) transmitted 18837 bytes. (Time: 1258920202.04)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2931 -> 157.166.255.38:80 (HTTP) transmitted 10180 bytes. (Time: 1258920202.18)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2933 -> 74.125.95.149:80 (HTTP) transmitted 51975 bytes. (Time: 1258920202.27)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2935 -> 74.125.95.149:80 (HTTP) transmitted 12993 bytes. (Time: 1258920202.30)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2936 -> 74.125.95.149:80 (HTTP) transmitted 69797 bytes. (Time: 1258920202.41)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2937 -> 74.125.95.149:80 (HTTP) transmitted 23086 bytes. (Time: 1258920202.45)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2938 -> 209.85.225.165:80 (HTTP) transmitted 288878 bytes. (Time: 1258920202.85)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2941 -> 74.125.95.155:80 (HTTP) transmitted 20970 bytes. (Time: 1258920202.96)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2944 -> 205.203.139.162:80 (HTTP) transmitted 100264 bytes. (Time: 1258920203.32)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2883 -> 205.203.140.65:80 (HTTP) transmitted 71991 bytes. (Time: 1258920204.43)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2945 -> 64.208.21.43:80 (HTTP) transmitted 25558 bytes. (Time: 1258920204.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2947 -> 64.208.21.43:80 (HTTP) transmitted 135240 bytes. (Time: 1258920204.56)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2948 -> 64.208.21.43:80 (HTTP) transmitted 129240 bytes. (Time: 1258920204.56)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2949 -> 64.208.21.43:80 (HTTP) transmitted 29050 bytes. (Time: 1258920204.56)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2950 -> 64.208.21.43:80 (HTTP) transmitted 19606 bytes. (Time: 1258920204.56)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2951 -> 64.208.21.43:80 (HTTP) transmitted 18666 bytes. (Time: 1258920204.56)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2906 -> 205.203.140.65:80 (HTTP) transmitted 77507 bytes. (Time: 1258920204.87)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2953 -> 205.203.140.65:80 (HTTP) transmitted 19477 bytes. (Time: 1258920204.90)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2960 -> 64.4.22.46:80 (HTTP) transmitted 10588 bytes. (Time: 1258920205.14)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2972 -> 209.85.225.149:80 (HTTP) transmitted 13136 bytes. (Time: 1258920206.76)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2973 -> 205.203.140.65:80 (HTTP) transmitted 15111 bytes. (Time: 1258920206.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2974 -> 205.203.140.65:80 (HTTP) transmitted 20831 bytes. (Time: 1258920206.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2975 -> 74.125.95.149:80 (HTTP) transmitted 73638 bytes. (Time: 1258920206.83)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2976 -> 74.125.95.149:80 (HTTP) transmitted 18350 bytes. (Time: 1258920207.00)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2978 -> 74.125.95.149:80 (HTTP) transmitted 46793 bytes. (Time: 1258920207.01)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2979 -> 74.125.95.149:80 (HTTP) transmitted 25653 bytes. (Time: 1258920207.01)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2984 -> 74.125.95.138:80 (HTTP) transmitted 69683 bytes. (Time: 1258920207.93)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2985 -> 74.125.166.28:80 (HTTP) transmitted 252665 bytes. (Time: 1258920208.37)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2986 -> 74.125.103.147:80 (HTTP) transmitted 633494 bytes. (Time: 1258920208.43)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2987 -> 209.85.225.133:80 (HTTP) transmitted 17631 bytes. (Time: 1258920208.57)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2988 -> 74.125.166.28:80 (HTTP) transmitted 164578 bytes. (Time: 1258920208.65)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2990 -> 209.85.225.118:80 (HTTP) transmitted 13390 bytes. (Time: 1258920208.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2991 -> 209.85.225.118:80 (HTTP) transmitted 21958 bytes. (Time: 1258920208.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2993 -> 209.85.225.133:80 (HTTP) transmitted 11187 bytes. (Time: 1258920208.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2994 -> 209.85.225.118:80 (HTTP) transmitted 19316 bytes. (Time: 1258920208.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2995 -> 209.85.225.118:80 (HTTP) transmitted 14600 bytes. (Time: 1258920208.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:2996 -> 74.125.166.28:80 (HTTP) transmitted 115470 bytes. (Time: 1258920208.79)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60658 -> 66.35.45.201:80 (HTTP) transmitted 36989 bytes. (Time: 1258920210.39)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60676 -> 66.35.45.201:80 (HTTP) transmitted 34816 bytes. (Time: 1258920211.52)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60677 -> 66.35.45.201:80 (HTTP) transmitted 32781 bytes. (Time: 1258920211.66)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60678 -> 66.35.45.201:80 (HTTP) transmitted 12313 bytes. (Time: 1258920211.66)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60679 -> 66.35.45.201:80 (HTTP) transmitted 55022 bytes. (Time: 1258920211.66)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:56614 -> 72.32.92.4:80 (HTTP) transmitted 15048 bytes. (Time: 1258920212.71)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:51322 -> 74.125.95.102:80 (HTTP) transmitted 13655 bytes. (Time: 1258920213.06)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:54432 -> 157.166.226.26:80 (HTTP) transmitted 26549 bytes. (Time: 1258920214.81)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34257 -> 204.160.126.126:80 (HTTP) transmitted 41946 bytes. (Time: 1258920214.96)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34258 -> 204.160.126.126:80 (HTTP) transmitted 20411 bytes. (Time: 1258920214.96)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34259 -> 204.160.126.126:80 (HTTP) transmitted 15551 bytes. (Time: 1258920214.96)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34260 -> 204.160.126.126:80 (HTTP) transmitted 16369 bytes. (Time: 1258920214.96)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34261 -> 204.160.126.126:80 (HTTP) transmitted 11409 bytes. (Time: 1258920215.81)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34262 -> 204.160.126.126:80 (HTTP) transmitted 12745 bytes. (Time: 1258920215.81)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:35622 -> 157.166.255.38:80 (HTTP) transmitted 12698 bytes. (Time: 1258920215.91)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:35624 -> 157.166.255.38:80 (HTTP) transmitted 12018 bytes. (Time: 1258920215.96)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:58692 -> 209.85.225.148:80 (HTTP) transmitted 10330 bytes. (Time: 1258920216.18)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:55787 -> 74.125.95.149:80 (HTTP) transmitted 55351 bytes. (Time: 1258920216.36)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:48335 -> 74.125.95.149:80 (HTTP) transmitted 28408 bytes. (Time: 1258920216.41)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:45615 -> 205.203.131.54:80 (HTTP) transmitted 101042 bytes. (Time: 1258920216.47)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:53995 -> 216.75.1.230:80 (HTTP) transmitted 59338 bytes. (Time: 1258920221.09)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:56637 -> 72.32.92.4:80 (HTTP) transmitted 32102 bytes. (Time: 1258920225.92)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60207 -> 216.137.43.102:80 (HTTP) transmitted 42557 bytes. (Time: 1258920228.69)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:34642 -> 216.137.43.218:80 (HTTP) transmitted 38331 bytes. (Time: 1258920229.08)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:3000 -> 74.125.103.163:80 (HTTP) transmitted 4232435 bytes. (Time: 1258920237.71)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.128:3002 -> 209.85.225.106:80 (HTTP) transmitted 33297 bytes. (Time: 1258920237.99)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60706 -> 66.35.45.201:80 (HTTP) transmitted 71789 bytes. (Time: 1258920241.31)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60707 -> 66.35.45.201:80 (HTTP) transmitted 102905 bytes. (Time: 1258920241.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60708 -> 66.35.45.201:80 (HTTP) transmitted 96118 bytes. (Time: 1258920241.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60709 -> 66.35.45.201:80 (HTTP) transmitted 58140 bytes. (Time: 1258920241.94)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60710 -> 66.35.45.201:80 (HTTP) transmitted 205628 bytes. (Time: 1258920242.64)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:60711 -> 66.35.45.201:80 (HTTP) transmitted 89887 bytes. (Time: 1258920242.64)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:56645 -> 72.32.92.4:80 (HTTP) transmitted 14719 bytes. (Time: 1258920245.33)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:56646 -> 72.32.92.4:80 (HTTP) transmitted 10439 bytes. (Time: 1258920248.92)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:56647 -> 72.32.92.4:80 (HTTP) transmitted 16373 bytes. (Time: 1258920249.15)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46905 -> 65.173.218.96:80 (HTTP) transmitted 61560 bytes. (Time: 1258920257.89)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46906 -> 65.173.218.96:80 (HTTP) transmitted 36620 bytes. (Time: 1258920258.00)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46907 -> 65.173.218.96:80 (HTTP) transmitted 101698 bytes. (Time: 1258920258.03)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46908 -> 65.173.218.96:80 (HTTP) transmitted 18775 bytes. (Time: 1258920258.03)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46909 -> 65.173.218.96:80 (HTTP) transmitted 83201 bytes. (Time: 1258920258.03)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46910 -> 65.173.218.96:80 (HTTP) transmitted 29482 bytes. (Time: 1258920258.03)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.136:46809 -> 98.142.102.10:80 (HTTP) transmitted 12110 bytes. (Time: 1258920259.40)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:54487 -> 157.166.226.26:80 (HTTP) transmitted 20936 bytes. (Time: 1258920270.98)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:34312 -> 204.160.126.126:80 (HTTP) transmitted 51874 bytes. (Time: 1258920271.11)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:53232 -> 157.166.255.7:80 (HTTP) transmitted 10509 bytes. (Time: 1258920271.54)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:59317 -> 4.23.40.126:80 (HTTP) transmitted 57080 bytes. (Time: 1258920271.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:59318 -> 4.23.40.126:80 (HTTP) transmitted 97462 bytes. (Time: 1258920271.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:59319 -> 4.23.40.126:80 (HTTP) transmitted 34257 bytes. (Time: 1258920271.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:59320 -> 4.23.40.126:80 (HTTP) transmitted 38667 bytes. (Time: 1258920271.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:59321 -> 4.23.40.126:80 (HTTP) transmitted 49900 bytes. (Time: 1258920271.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:59322 -> 4.23.40.126:80 (HTTP) transmitted 32456 bytes. (Time: 1258920271.55)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:53241 -> 157.166.255.7:80 (HTTP) transmitted 13791 bytes. (Time: 1258920271.59)
+  [MEDIUM] High Volume Flow - Flow 172.16.16.197:39996 -> 209.85.225.149:80 (HTTP) transmitted 13949 bytes. (Time: 1258920271.91)
+
+==================================

@@ -217,6 +217,8 @@ def parse_dns(packet) -> dict[str, any] | None:
         return None
 
     question = packet[DNS].qd
+    if isinstance(question, list) and len(question) > 0:
+        question = question[0]
     if isinstance(question, DNSQR):
         domain = normalize_domain(clean_text(question.qname))
         if domain:

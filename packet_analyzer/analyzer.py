@@ -39,6 +39,14 @@ def extract_dns(packet) -> list[str]:
     queries: list[str] = []
     question = packet[DNS].qd
 
+    if isinstance(question, list):
+        for q in question:
+            if isinstance(q, DNSQR):
+                domain = normalize_domain(clean_text(q.qname))
+                if domain:
+                    queries.append(domain)
+        return queries
+
     if isinstance(question, DNSQR):
         domain = normalize_domain(clean_text(question.qname))
         if domain:

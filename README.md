@@ -17,7 +17,7 @@ PacketInsight is a network traffic analysis and intelligence platform. It analyz
 * **Rule-Based Threat Detection**: Scans flows and packets against security rules to identify port scanning, DNS floods, and high-volume data transmissions.
 * **Relational Database Storage**: Persists analyzed flows, packets, sub-protocols, and security alerts using SQLite and SQLAlchemy ORM.
 * **Flexible Report Formats**: Supports text reports, JSON exports, and CSV summaries (flows and packet log files).
-* **Auto-Demo Mode**: If a requested `.pcap` file is missing, the tool automatically generates a sample PCAP file with realistic mock traffic (DNS, HTTP, TLS, SSH, DHCP) to run a demonstration.
+* **Fallback Demo Generator**: If a requested `.pcap` file is missing, the tool automatically generates a sample PCAP file with mock traffic as a fallback helper for instant demonstration.
 
 ---
 
@@ -220,3 +220,84 @@ microsoft.com: 1
 
 ================================
 ```
+
+---
+
+## 🛡️ Tested Against Real-World Traffic
+
+PacketInsight is validated against real network packet captures. Below is the verification report from parsing a real-world multi-client web session capture (`lotsofweb.pcapng`) containing over 12,800 packets:
+
+### Real Traffic Analysis Result Table
+
+```text
+==================================
+PACKET ANALYSIS REPORT
+==================================
+
+Analyzed File: pcaps/lotsofweb.pcapng
+Total Packets: 12899
+Processed Packets: 12899
+Skipped Packets: 0
+
+Protocol Statistics:
+DHCP: 2
+DNS: 105
+HTTP: 12640
+HTTPS: 5
+TLS: 5
+UDP: 139
+
+Top Source IPs:
+74.125.103.163: 2882
+172.16.16.128: 2790
+172.16.16.136: 1137
+172.16.16.197: 1107
+66.35.45.201: 596
+
+Top Destination IPs:
+172.16.16.128: 5534
+172.16.16.136: 1212
+172.16.16.197: 1050
+74.125.103.163: 1045
+66.35.45.201: 510
+
+Top DNS Queries:
+i.dev.cdn.turner.com: 8
+i.dev.cdn.turner.com.ewaphoenix.com: 8
+pagead2.googlesyndication.com: 4
+www.nostarch.com: 4
+www.sans.org: 4
+
+Sample HTTP Requests:
+GET online.wsj.com/public/page/0_0_WH_0001_public_breakingnewscontent.html
+GET www.cnn.com/
+GET i.cdn.turner.com/cnn/.element/css/3.0/common.css
+GET i.cdn.turner.com/cnn/.element/js/3.0/protoaculous.1.8.2.min.js
+GET i.cdn.turner.com/cnn/.element/css/3.0/main.css
+
+TLS Hosts:
+TLS traffic on port 443: 5
+
+Flow Analysis Summary (Top 5):
+  172.16.16.128:3000 <-> 74.125.103.163:80 (HTTP) | Packets: 3927 | Bytes: 4232435 | Duration: 54.31s
+  172.16.16.128:2986 <-> 74.125.103.147:80 (HTTP) | Packets: 608 | Bytes: 633494 | Duration: 7.54s
+  172.16.16.128:2938 <-> 209.85.225.165:80 (HTTP) | Packets: 274 | Bytes: 288878 | Duration: 48.37s
+  172.16.16.128:2985 <-> 74.125.166.28:80 (HTTP) | Packets: 255 | Bytes: 252665 | Duration: 31.22s
+  172.16.16.136:60710 <-> 66.35.45.201:80 (HTTP) | Packets: 219 | Bytes: 205628 | Duration: 44.86s
+
+Security Alerts:
+  [HIGH] Port Scan - Host 172.16.16.128 scanned 7 different ports: [53, 80, 137, 161, 427, 1900, 5355]. (Time: 1258920198.46)
+  [HIGH] Port Scan - Host 172.16.16.136 scanned 3 different ports: [53, 80, 443]. (Time: 1258920198.46)
+  [HIGH] DNS Flood - Host 172.16.16.128 sent 16 DNS queries, exceeding threshold of 3. (Time: 1258920198.46)
+  [HIGH] DNS Flood - Host 172.16.16.197 sent 63 DNS queries, exceeding threshold of 3. (Time: 1258920198.46)
+  [HIGH] DNS Flood - Host 172.16.16.136 sent 26 DNS queries, exceeding threshold of 3. (Time: 1258920198.46)
+  ... [truncated for readability]
+
+==================================
+```
+
+### Terminal Run Screenshot
+
+Below is a terminal screenshot showing the PacketInsight analyzer successfully processing the real-world PCAP file and outputting structured analysis and threat detection alerts:
+
+![PacketInsight Real Traffic Execution](reports/lotsofweb_screenshot.png)
